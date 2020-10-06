@@ -37,3 +37,9 @@
 
 1. https://colab.research.google.com/notebook#create=true&language=r
 
+#### Kaggle
+
+1. https://www.kaggle.com/notebooks
+
+
+
