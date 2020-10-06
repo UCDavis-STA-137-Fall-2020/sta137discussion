@@ -7,7 +7,8 @@ Po
 
 Name: Chi Po Choi
 
-Email: `cpchoi@ucdavis.edu`
+Email: `cpchoi@ucdavis.edu` (Email title starts with `[STA137]`, or
+maybe [piazza](https://piazza.com/class/kfcspxpbyp97gn)?)
 
 Office Hours: Tuesday 12noon-ish \~ 1pm-ish, Thursday 12noon-ish \~
 1pm-ish
