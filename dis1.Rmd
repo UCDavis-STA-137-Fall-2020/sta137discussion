@@ -1,0 +1,141 @@
+---
+title: "Discussion 1"
+author: "Po"
+date: "10/6/2020"
+output: rmarkdown::github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# Logistics
+Name: Chi Po Choi
+
+Email: `cpchoi@ucdavis.edu`
+
+Office Hours: Tuesday 12noon-ish ~ 1pm-ish, Thursday 12noon-ish ~ 1pm-ish
+
+
+# R time series landscape
+
+There are a lots of R functions and R packages for time series analysis.
+
+Time-Series Objects
+```{r}
+?ts
+```
+
+[CRAN Task View: Time Series Analysis](https://cran.r-project.org/web/views/TimeSeries.html)
+
+
+# Data in textbook
+
+The *Chapman&Hall textbook* **Time Series: A Data Analysis Approach Using R** and the *Springer textbook* **Time Series Analysis and Its Applications** has a companion R package `astsa` which contains time series data illustrated. https://github.com/nickpoison/astsa
+
+Install it and get the data.
+```{r, eval=FALSE}
+# In case you haven't install devtools
+# install.packages("devtools")
+devtools::install_github("nickpoison/astsa")
+```
+
+For example, `eqexp` is
+```{r}
+?astsa::eqexp
+```
+> This is a data frame of the earthquake and explosion seismic series used throughout the text.
+
+```{r}
+head(astsa::eqexp)
+```
+
+```{r}
+str(astsa::eqexp)
+```
+
+
+# Plotting time series
+
+```{r}
+p_index = 1:1024
+time_series_name = c("EQ6", "EX4")
+time_series_to_be_plotted = astsa::eqexp[p_index, time_series_name]
+plot.ts(time_series_to_be_plotted,
+        plot.type = "multiple",
+        nc = 1,
+        main = "P waves")
+```
+
+```{r}
+s_index = p_index+1024
+colors_name = c("red", "blue")
+time_series_to_be_plotted = astsa::eqexp[s_index, time_series_name]
+plot.ts(time_series_to_be_plotted,
+        plot.type="single",
+        main="S waves",
+        col=colors_name,
+        ylab="somethings")
+legend("bottomleft",
+       time_series_name,
+       col=colors_name,
+       lty=1)
+```
+
+Plotting Time-Series Objects
+```{r}
+?plot.ts
+```
+
+R knowledge question: Do you know what are the differences among those calls?
+
+- `plot.ts(x)`
+- `plot(ts(x))`
+- `plot(x)`
+- `plot.ts(ts(x))`
+
+
+# Simulating time series
+
+$x_t = s_t + \omega_t$ where $\omega_t \sim WN(0,1)$
+$$
+s_t = 
+      \begin{cases}
+      0, & t=1,\dots,125 \\
+      10\;e^{-\frac{t-125}{25}}\cos(2\pi t/4) ,& t=126,\dots,250
+      \end{cases}
+$$
+
+```{r}
+s_fun = function(t) ifelse(t<=125, 0, 10*exp(-(t-125)/25)*cos(2*pi*t/4))
+omega_fun = function(t) rnorm(length(t))
+
+t_index = 1:250
+set.seed(19460614)
+x = ts(s_fun(t_index) + omega_fun(t_index))
+```
+
+```{r}
+str(x)
+```
+
+```{r}
+plot(x)
+```
+
+```{r}
+acf(x)
+```
+
+```{r}
+str(acf(x, plot=F))
+```
+
+# Summary
+
+- `?`
+- `str`
+- `ts`
+- `plot.ts`
+- `acf`
