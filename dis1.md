@@ -145,9 +145,7 @@ calls?
 
 # Simulating time series
 
-<img src="https://render.githubusercontent.com/render/math?math=x_t%20%3D%20s_t%20%2B%20%5Comega_t">
-where
-<img src="https://render.githubusercontent.com/render/math?math=%5Comega_t%20%5Csim%20WN(0%2C1)">
+<img src="https://render.githubusercontent.com/render/math?math=x_t%20%3D%20s_t%20%2B%20%5Comega_t"> where <img src="https://render.githubusercontent.com/render/math?math=%5Comega_t%20%5Csim%20WN(0%2C1)">
 
 <img src="https://render.githubusercontent.com/render/math?math=s_t%20%3D%20%5Cbegin%7Bcases%7D%0A%20%20%20%20%20%200%2C%20%26%20t%3D1%2C%5Cdots%2C125%20%5C%5C%0A%20%20%20%20%20%2010%5C%3Be%5E%7B-%5Cfrac%7Bt-125%7D%7B25%7D%7D%5Ccos(2%5Cpi%20t%2F4)%20%2C%26%20t%3D126%2C%5Cdots%2C250%0A%20%20%20%20%20%20%5Cend%7Bcases%7D">
 
