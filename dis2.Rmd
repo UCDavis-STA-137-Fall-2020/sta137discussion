@@ -1,0 +1,194 @@
+---
+title: "Discussion 2"
+author: "Po"
+date: "10/13/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Logistics
+
+[Piazza](https://piazza.com/uc_davis/fall2020/sta137/home)
+
+# Moving average
+
+```{r}
+?filter
+?acf
+```
+
+```{r}
+set.seed(530476)
+N = 16
+w = rnorm(N)
+x = filter(w, filter=rep(1/5,5))
+
+some_ts = cbind(w, x)
+some_ts
+plot(some_ts)
+x_acf = acf(x, na.action = na.omit)
+```
+
+
+```{r}
+str(acf(x, na.action = na.pass, plot=F))
+```
+```{r}
+str(acf(x, na.action = na.omit, plot=F))
+```
+
+
+```{r}
+data.frame(lag = x_acf$lag,
+           acf = x_acf$acf)
+```
+
+By the way, what is the difference?
+- `cbind(x, w)`
+- `data.frame(x, w)`
+- `ts(data.frame(x, w))`
+
+# Transformation
+
+Sedimentary deposits from one location in Massachusetts for 634 years, beginning nearly 12,000 years ago.
+```{r}
+?astsa::varve
+```
+
+```{r, fig.height=12}
+varve_more = cbind(astsa::varve, log(astsa::varve), diff(log(astsa::varve)))
+plot(varve_more)
+```
+
+```{r}
+?log
+?diff
+```
+
+# Seasonality
+
+Lets look at some built-in datasets in R.
+```{r}
+library(help = "datasets")
+```
+
+For example, Quarterly Approval Ratings of US Presidents
+```{r}
+presidents
+```
+
+```{r}
+plot(presidents, main="Quarterly Approval Ratings of US Presidents")
+```
+
+For example, Monthly Airline Passenger Numbers 1949-1960
+```{r}
+AirPassengers
+```
+```{r, fig.height=8}
+plot(cbind(AirPassengers, log10(AirPassengers)),
+     main="Monthly Airline Passenger Numbers 1949-1960")
+```
+
+```{r}
+AirPassengers_df = data.frame(
+  p = log10(AirPassengers),
+  t = time(AirPassengers),
+  m = as.factor(cycle(AirPassengers))
+)
+head(AirPassengers_df)
+```
+
+```{r}
+makeDF = function(x) {
+  df = data.frame(
+    y = log10(x),
+    t = time(x),
+    s = as.factor(cycle(x))
+  )
+}
+seaLS1 = function(x) {
+  df = makeDF(x)
+  lm(y ~ t - 1 + s, data = df)
+}
+seaLS2 = function(x) {
+  df = makeDF(x)
+  lm(y ~ t + s, data = df)
+}
+seaLS3 = function(x) {
+  df = makeDF(x)
+  lm(y ~ t + s, data = df, contrasts = list(s = contr.sum))
+}
+seaLS4 = function(x) {
+  df = makeDF(x)
+  lm(y ~ t, data = df)
+}
+
+mod1 = seaLS1(AirPassengers)
+mod2 = seaLS2(AirPassengers)
+mod3 = seaLS3(AirPassengers)
+mod4 = seaLS4(AirPassengers)
+```
+
+Can you tell the difference between `seaLS1`, `seaLS2`, `seaLS3` and `seaLS4`? (Try `model.matrix(mod1)` etc!)
+
+```{r}
+summary(mod1)
+summary(mod2)
+summary(mod3)
+summary(mod4)
+
+anova(mod1, mod4)
+```
+
+```{r}
+plot_two_hists = function(x1, x2) {
+  colvec = c(rgb(1,0,0,0.5), rgb(0,0,1,0.5))
+  rangevec = c(min(x1, x2), max(x1, x2))
+  hist(x1,
+       breaks=seq(rangevec[1], rangevec[2], length.out=20),
+       col=colvec[1],
+       xlim=rangevec,
+       main="Residual",
+       xlab="residual"
+  )
+  hist(x2,
+       breaks=seq(rangevec[1], rangevec[2], length.out=20),
+       col=colvec[2],
+       xlim=rangevec,
+       add=T
+  )
+  legend("topright",
+         legend=c(deparse(substitute(x1)), deparse(substitute(x2))),
+         col=colvec,
+         pch=15)
+}
+plot_two_hists(resid(mod1), resid(mod4))
+
+qqnorm(resid(mod1)); qqline(resid(mod1))
+qqnorm(resid(mod4)); qqline(resid(mod4))
+```
+
+Look at the example of `JohnsonJohnson`
+```{r}
+?JohnsonJohnson
+```
+
+The help of `JohnsonJohnson` has the example:
+```{r, fig.height=8, eval = F}
+JJ <- log10(JohnsonJohnson)
+plot(cbind(x=JohnsonJohnson, logx=JJ),
+     main="Johnson & Johnson Quarterly Earnings")
+fit <- StructTS(JJ, type = "BSM")
+tsdiag(fit)
+sm <- tsSmooth(fit)
+plot(cbind(JJ, sm[, 1], sm[, 3]-0.5), plot.type = "single",
+     col = c("black", "green", "blue"))
+abline(h = -0.5, col = "grey60")
+
+monthplot(fit)
+```
+
