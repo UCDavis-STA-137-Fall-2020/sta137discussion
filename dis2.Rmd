@@ -46,7 +46,8 @@ data.frame(lag = x_acf$lag,
            acf = x_acf$acf)
 ```
 
-By the way, what is the difference?
+By the way, could you tell what is the difference in those calls?
+
 - `cbind(x, w)`
 - `data.frame(x, w)`
 - `ts(data.frame(x, w))`
