@@ -1,0 +1,69 @@
+---
+title: "Discussion 3"
+author: "Po"
+date: "10/20/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Logistics
+
+[Piazza](https://piazza.com/uc_davis/fall2020/sta137/home)
+
+# HW2
+
+```{r}
+ts(1:10, frequency = 4, start = c(1959, 2)) # 2nd Quarter of 1959
+```
+
+```{r}
+makeDF = function(x) {
+  df = data.frame(
+    y = log10(x),
+    t = time(x),
+    s = as.factor(cycle(x))
+  )
+}
+seaLS1 = function(x) {
+  df = makeDF(x)
+  lm(y ~ t - 1 + s, data = df)
+}
+seaLS2 = function(x) {
+  df = makeDF(x)
+  lm(y ~ t + s, data = df, contrasts = list(s = contr.helmert))
+}
+mod1 = seaLS1(JohnsonJohnson)
+mod2 = seaLS2(JohnsonJohnson)
+
+model.matrix(mod1)
+model.matrix(mod2)
+
+summary(mod1)
+summary(mod2)
+
+library(car)
+linearHypothesis(mod1, "s3=s4")
+```
+```{r}
+plot(log10(JohnsonJohnson))
+x = JohnsonJohnson
+window(x) = predict(mod1)
+lines(x, col = "red")
+```
+
+
+# Practice problems
+
+8am
+
+https://jamboard.google.com/d/1qJDho1PUVCjHbsA-YBGz9K-itFQHhXNQiXf-3ucggbM/edit?usp=sharing
+
+
+11am
+
+https://jamboard.google.com/d/1xhZOW_Op-1Ok6g61J8SHQHiyczyjczycEqKbVQJLdms/edit?usp=sharing
+
+
