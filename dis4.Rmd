@@ -1,5 +1,5 @@
 ---
-title: "Discussion 3"
+title: "Discussion 4"
 author: "Po"
 date: "10/27/2020"
 output: html_document
@@ -13,7 +13,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 [Piazza](https://piazza.com/uc_davis/fall2020/sta137/home)
 
-# Time series softwares
+# Time series packages
 
 - [Facebook Prophet](https://facebook.github.io/prophet/) uses fourier series to model seasonality, see page 11 of the [paper](https://peerj.com/preprints/3190/) and [codes](https://github.com/facebook/prophet/)  [here](https://github.com/facebook/prophet/blob/fb6552137cb54655123eb0872561fb6bacb9bf5c/R/R/prophet.R#L477).
 
