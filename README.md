@@ -10,3 +10,4 @@
 - [Discussion 1](https://ucdavis-sta-137-fall-2020.github.io/sta137discussion/dis1.html) 
 - [Discussion 2](https://ucdavis-sta-137-fall-2020.github.io/sta137discussion/dis2.html) 
 - [Discussion 3](https://ucdavis-sta-137-fall-2020.github.io/sta137discussion/dis3.html) 
+- [Discussion 4](https://ucdavis-sta-137-fall-2020.github.io/sta137discussion/dis4.html) 

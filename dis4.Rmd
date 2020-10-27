@@ -1,0 +1,85 @@
+---
+title: "Discussion 3"
+author: "Po"
+date: "10/27/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Logistics
+
+[Piazza](https://piazza.com/uc_davis/fall2020/sta137/home)
+
+# Time series softwares
+
+- [Facebook Prophet](https://facebook.github.io/prophet/) uses fourier series to model seasonality, see page 11 of the [paper](https://peerj.com/preprints/3190/) and [codes](https://github.com/facebook/prophet/)  [here](https://github.com/facebook/prophet/blob/fb6552137cb54655123eb0872561fb6bacb9bf5c/R/R/prophet.R#L477).
+
+- [R pakcage `forcast`](https://otexts.com/fpp2/complexseasonality.html)
+
+# ARMA
+
+`arima.sim`
+
+`ARMAtoMA`
+
+`ARMAacf`
+
+`arima`
+
+
+$$
+x_t = 0.3 x_{t-1} + 0.4 x_{t-2} + w_t
+$$
+```{r}
+ARMAtoMA(ar = c(0.3, 0.4), lag.max = 10)
+```
+
+```{r}
+arima.sim(list(ar=c(0.3, 0.4)), n=20)
+```
+
+```{r}
+arima.sim(list(ar=c(0.3, 0.4)), n=20)
+```
+
+```{r}
+ACF = ARMAacf(ar=c(0.3, 0.4), lag.max = 10)
+plot(ACF, type="h", xlab="lag", ylim = c(0.0, 1.0))
+abline(h=0)
+```
+```{r}
+ACF = ARMAacf(ar=c(0.3, -0.4), lag.max = 10)
+plot(ACF, type="h", xlab="lag", ylim = c(-1.0, 1.0))
+abline(h=0)
+```
+
+```{r}
+ACF = ARMAacf(ma=c(0.1, 0.2), lag.max = 10)
+plot(ACF, type="h", xlab="lag")
+abline(h=0)
+```
+
+```{r}
+x = arima.sim(list(ar=c(0.3, 0.4)), n=1000)
+arima(x, order=c(2,0,0)) 
+```
+
+
+# HW3
+
+MA(1) has ACF
+$$
+\begin{aligned}
+\rho(h=1) &= \frac{\theta_1}{1+\theta_1^2} \\
+\rho(h>1) &= 0 \\
+\end{aligned}
+$$
+Show $\frac{\theta_1}{1+\theta_1^2} \leq \frac12$ for all $\theta_1 \in \mathbb{R}$.
+
+Factorize polynomial $1-0.8z+0.15z^2$. 
+
+
+
