@@ -1,0 +1,108 @@
+---
+title: "Discussion 5"
+author: "Po"
+date: "10/27/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Logistics
+
+[Piazza](https://piazza.com/uc_davis/fall2020/sta137/home)
+
+# ACF, PACF
+
+## AR(2)
+
+$$
+x_t = 0.3 x_{t-1} + 0.4 x_{t-2} + w_t
+$$
+
+```{r fig.height = 8, fig.width = 8}
+x1 = arima.sim(list(ar=c(0.3, -0.4)), n=100)
+par(mfrow=c(2,1))
+plot(0:10, ARMAacf(ar=c(0.3, -0.4), lag.max = 10),
+     type = "h",
+     xlab = "lag",
+     ylab = "Theoretical ACF",
+     main = "Theoretical ACF of AR(2) (0.3, -0.4)"
+     )
+abline(h = 0)
+acf(x1, lag.max = 10)
+```
+
+```{r fig.height = 8, fig.width = 8}
+x1 = arima.sim(list(ar=c(0.3, -0.4)), n=100)
+par(mfrow=c(2,1))
+plot(1:10, ARMAacf(ar=c(0.3, -0.4), lag.max = 10, pacf=TRUE),
+     type = "h",
+     xlab = "lag",
+     ylab = "Theoretical PACF",
+     main = "Theoretical PACF of AR(2) (0.3, -0.4)"
+     )
+abline(h = 0)
+pacf(x1, lag.max = 10)
+```
+
+## MA(2)
+
+```{r fig.height = 8, fig.width = 8}
+x2 = arima.sim(list(ma=c(0.2, 0.1)), n=100)
+par(mfrow=c(2,1))
+plot(0:10, ARMAacf(ma=c(0.2, 0.1), lag.max = 10),
+     type = "h",
+     xlab = "lag",
+     ylab = "Theoretical ACF",
+     main = "Theoretical ACF of MA(2) (0.2, 0.1)"
+     )
+abline(h = 0)
+acf(x2, lag.max = 10)
+```
+
+```{r fig.height = 8, fig.width = 8}
+par(mfrow=c(2,1))
+plot(1:10, ARMAacf(ma=c(0.2, 0.1), lag.max = 10, pacf=TRUE),
+     type = "h",
+     xlab = "lag",
+     ylab = "Theoretical PACF",
+     main = "Theoretical PACF of MA(2) (0.2, 0.1)"
+     )
+abline(h = 0)
+pacf(x2, lag.max = 10)
+```
+
+# HW4
+
+- 1a Show $X_t = \sum_{j=0}^t \phi^j Z_{t-j}$.
+- 1b/c Show $\text{Cov}(X_{t+h}, X_t) = \phi^h \text{Var}(X_t)$.
+
+- 2 Show $\rho(1) = \frac{\theta}{1+\theta^2}$. What is $\text{Cov}(X_{t+1} - \rho(1) X_{t+1}, X_{t} - \rho(1) X_{t+1})$?
+
+- 4 WTF? TBH the wording in this question is too fancy I don't comprehend this neither. Let me tell you the solution directly. It is in fact
+  $$
+  X_{n+2} = \phi^2_1 X_n + \phi_1 \phi_2 X_{n-1} + \phi_1 w_{n+1} + w_{n+2}
+  $$
+  and thus
+  $$
+  E[(X_{n+2} - \phi^2_1 X_n - \phi_1 \phi_2 X_{n-1})]
+  =
+  0 \quad \text{for all } k = 1, 2, \dots, n
+  $$
+  From all the above equations, you can guess the formula for $X^n_{n+2}$.
+  Please fill in the missing mathematical arguments and conclusion. Blindly copy and paste above sentences as solution will get zero mark.
+  
+# Rmarkdown
+
+Hey, most of the project submissions are very uglily written. Your answers would be easily overlooked if you just throw all raw R outputs and treat them as answers. If your answer is sitting inside raw R output and is also unfortunately  missed, it will NOT credited :(.
+
+There are some resources of RMarkdown for you to learn better organizing your work.
+
+- https://bookdown.org/yihui/rmarkdown/
+- https://r4ds.had.co.nz/r-markdown.html
+- https://www.google.com/search?q=Rmarkdown
+
+
+
