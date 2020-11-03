@@ -79,7 +79,7 @@ pacf(x2, lag.max = 10)
 - 1a Show $X_t = \sum_{j=0}^t \phi^j Z_{t-j}$.
 - 1b/c Show $\text{Cov}(X_{t+h}, X_t) = \phi^h \text{Var}(X_t)$.
 
-- 2 Show $\rho(1) = \frac{\theta}{1+\theta^2}$. What is $\text{Cov}(X_{t+1} - \rho(1) X_{t+1}, X_{t} - \rho(1) X_{t+1})$?
+- 2 Show $\rho(1) = \frac{\theta}{1+\theta^2}$. What is $\text{Cov}(X_{t+2} - \rho(1) X_{t+1}, X_{t} - \rho(1) X_{t+1})$?
 
 - 4 WTF? TBH the wording in this question is too fancy I don't comprehend this neither. Let me tell you the solution directly. It is in fact
   $$
