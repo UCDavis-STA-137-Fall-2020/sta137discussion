@@ -1,0 +1,107 @@
+---
+title: "Discussion 6"
+author: "Po"
+date: "11/10/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Logistics
+
+[Piazza](https://piazza.com/uc_davis/fall2020/sta137/home)
+
+# Fit somethings in R
+
+Check the help files of functions
+```{r}
+?acf
+?pacf
+?astsa::sarima
+?astsa::sarima.for
+?astsa::cmort
+```
+
+
+```{r}
+f = astsa::sarima(astsa::cmort, p=1, d=0, q=0)
+```
+
+```{r}
+str(f)
+```
+
+```{r}
+f$ttable
+```
+
+
+
+```{r}
+p = astsa::sarima.for(astsa::cmort, n.ahead=3, p=1, d=0, q=0)
+```
+
+```{r}
+str(p)
+```
+
+```{r}
+df = read.csv("HW5_Q2_data.csv")
+x = ts(df$x)
+str(x)
+```
+
+```{r}
+astsa::sarima(x, p=1, d=0, q=1)
+```
+
+```{r}
+arima(x, order = c(1, 0, 1), fixed = c(0.7, 0.4, 0.0))
+```
+
+```{r}
+astsa::sarima.for(x, n.ahead=3, p=1, d=0, q=1, fixed = c(0.7, 0.4, 0.0))
+```
+
+
+# Predict something in math
+
+If the true model is
+$$
+\begin{aligned}
+X_{t+1} &= \varphi X_t + W_{t+1} \\
+X_{t+2} &= \varphi X_{t+1} + W_{t+2}
+\end{aligned}
+$$
+then
+$$
+\begin{aligned}
+\text{E}[X_{t+1}| X_t ]
+&=
+\text{E}[\varphi X_t + W_{t+1} | X_t]
+\\
+&=
+\varphi \text{E}[X_t| X_t] + \text{E}[W_{t+1} | X_t]
+\\
+&=
+\varphi X_t 
+\end{aligned}
+$$
+and also
+$$
+\begin{aligned}
+\text{E}[X_{t+2}| X_t ]
+&=
+\text{E}[ \varphi X_{t+1} + W_{t+2}| X_t ]
+\\
+&=
+\varphi \text{E}[ X_{t+1}| X_t ] + \text{E}[W_{t+2}| X_t ]
+\\
+&=
+\varphi^2 X_t 
+\end{aligned}
+$$
+
+See! Math is easy!
