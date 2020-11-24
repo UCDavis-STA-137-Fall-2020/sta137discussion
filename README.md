@@ -14,3 +14,4 @@
 - [Discussion 5](https://ucdavis-sta-137-fall-2020.github.io/sta137discussion/dis5.html) 
 - [Discussion 6](https://ucdavis-sta-137-fall-2020.github.io/sta137discussion/dis6.html) 
 - [Discussion 7](https://ucdavis-sta-137-fall-2020.github.io/sta137discussion/dis7.html) 
+- [Discussion 8](https://ucdavis-sta-137-fall-2020.github.io/sta137discussion/dis8.html) 

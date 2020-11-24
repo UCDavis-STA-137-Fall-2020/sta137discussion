@@ -1,0 +1,91 @@
+---
+title: "Discussion 8"
+author: "Po"
+date: "11/24/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Logistics
+
+[Piazza](https://piazza.com/uc_davis/fall2020/sta137/home)
+
+# ARIMA
+
+## Glacial Varve Series
+
+Let's plot the Glacial Varve Series. The log transform makes the variance stable over time. The 1st order differencing makes it look like stationary.
+```{r, fig.height=9, fig.width=6}
+gvss = ts(data.frame(
+  x = astsa::varve[-1],
+  logx = log10(astsa::varve)[-1],
+  difflogx = diff(log10(astsa::varve))
+))
+title_string = "Glacial Varve Series"
+plot(gvss, main = title_string)
+```
+
+Let's fit ARIMA with $d = 1$ with. To determine the order, let's plot ACF and PACF. ACF has lag 1 significant, while PACF has a longer decay. Our first guess is ARIMA(0,1,1).
+```{r}
+acf(gvss[, "difflogx"])
+pacf(gvss[, "difflogx"])
+```
+
+However, the residual of the ARIMA(0,1,1) fit still has non-zero autocorrelation.
+```{r}
+astsa::sarima(gvss[, "difflogx"], 0, 1, 1)
+```
+
+Trying some others set of $(p,q)$, we find ARIMA(1,1,2) fit seems to have residual looking white...
+```{r}
+astsa::sarima(gvss[, "difflogx"], 1, 1, 2)
+```
+
+If you set (p,q) to be higher, you can still get residual looking white, for example, ARIMA(2,1,2). But it is not as good as ARIMA(1,1,2). Firstly, here we got some extra parameters. Secondly, now we have some fitted coefficients "not significant". Thirdly, those AIC things doesn't decrease.
+```{r}
+astsa::sarima(gvss[, "difflogx"], 2, 1, 2)
+```
+
+## Moral of the story
+
+We choose ARIMA(p, d, q) so that the residual looks white (stationary and zero autocorrelation, or maybe normal (normal+zero-correlation => independent!)), while the AIC, BIC things keep minimum. 
+
+
+# Regression with ARMA error
+
+## Lynx–Hare Populations
+Text book example 5.17
+```{r message=FALSE}
+library(astsa)
+df = ts(data.frame(
+  Hare = Hare,
+  Lynx = Lynx
+))
+title_string = "Lynx–Hare Populations"
+plot(df, main = title_string)
+```
+
+Hare lag 1 seems to be a good predictor for Lynx.
+```{r message=FALSE}
+library(zoo)
+lag2.plot(Hare, Lynx, 5) # lead-lag relationship
+```
+
+Fit linear regression model
+```{r}
+pp = as.zoo(ts.intersect(Lynx, HareL1 = lag(Hare,-1)))
+summary(reg <- lm(pp$Lynx~ pp$HareL1))
+acf2(resid(reg))
+```
+
+Maybe an AR(2) model for the residual?
+```{r}
+astsa::sarima(resid(reg), 2, 0, 0)
+```
+
+## Moral of the story
+
+In STA108 Regression Analysis, we learned that the errors is assumed to be independent normal. Nevertheless, it is valid to fit linear regression when the errors are correlated. (Hopeful you will understand the rationale in mathematical statistics classes...)
