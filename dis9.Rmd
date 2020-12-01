@@ -1,0 +1,87 @@
+---
+title: "Discussion 9"
+author: "Po"
+date: "12/01/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Logistics
+
+[Piazza](https://piazza.com/uc_davis/fall2020/sta137/home)
+
+# Multiplicative Seasonal ARIMA Models
+
+## Multiplicative Seasonal ARMA Models (no I)
+
+ARMA$(p, q) \times (P, Q)_s$
+
+For example, an ARMA$(0,1) \times (1, 0)_{12}$ is
+$$
+x_t = \Phi x_{t-12} + w_t + \theta w_{t-1}
+$$
+where $\Phi$ and $\theta$ are parameters to be fitted.
+
+## Multiplicative Seasonal ARIMA Models
+
+For example, an ARIMA$(0, 1, 1) \times (0, 1, 1)_{12}$ is
+$$
+(1 - B^{12})(1-B)x_t = (1+\Theta B^{12})(1+\theta B) w_t
+$$
+
+## Example
+
+## Fit fit fit
+Textbook library
+```{r}
+?astsa::sarima
+```
+
+```{r}
+d = cbind(
+  x = AirPassengers,
+  lx = log(AirPassengers),
+  dlx = diff(log(AirPassengers)),
+  ddlx = diff(diff(log(AirPassengers)), 12)
+)
+plot(d)
+```
+
+```{r}
+astsa::acf2(d[,"ddlx"], 50)
+```
+Fit ARIMA$(0,1,0)\times (0, 1, 0)_{12}$
+```{r}
+astsa::sarima(d[,"lx"], 0, 1, 0, 0, 1, 0, 12)
+```
+
+Fit ARIMA$(0,1,0)\times (0, 1, 1)_{12}$
+```{r}
+astsa::sarima(d[,"lx"], 0, 1, 0, 0, 1, 1, 12)
+```
+
+Fit ARIMA$(0,1,1)\times (0, 1, 0)_{12}$
+```{r}
+astsa::sarima(d[,"lx"], 0, 1, 1, 0, 1, 0, 12)
+```
+Fit ARIMA$(0,1,1)\times (0, 1, 1)_{12}$
+```{r}
+astsa::sarima(d[,"lx"], 0, 1, 1, 0, 1, 1, 12)
+```
+Fit ARIMA$(0, 1, 1)\times (0, 1, 1)_{12}$
+```{r}
+astsa::sarima(d[,"lx"], 1, 1, 0, 1, 1, 0, 12)
+```
+
+## Moral of the story
+
+- Stabilize the variance with log transform if needed
+- The seasonality $s$ is from common sense. Daily, weekly, Monthly, Quaterly, yearly?
+- Plot the ACF, PACF of tranformed and differenced data
+- Try possible ARIMA$(p, d, q) \times (P, D, Q)_{s}$. 
+  - Look at the residual's ACF, Q-Qplot
+  - Look at the t-test of fitted parameters and the AIC things.
+
