@@ -1,0 +1,28 @@
+---
+title: "Discussion 10"
+author: "Po"
+date: "12/08/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Logistics
+
+[Piazza](https://piazza.com/uc_davis/fall2020/sta137/home)
+
+
+# Practice problems
+
+8am
+
+https://jamboard.google.com/d/1TtWG2Zshpsnb8YDqVHk-kHfIIn7-4f1ElISl9so0YDE/edit?usp=sharing
+
+
+11am
+
+https://jamboard.google.com/d/1v0ef4eR-nO-CU_EKlAJqGE8klrcEOgtiNqBoHNWxTI0/edit?usp=sharing
+
+
